@@ -1,6 +1,6 @@
-import sklearn
 import pandas
 import numpy
+import pickle
 from sklearn import metrics
 from sklearn import svm
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -19,13 +19,14 @@ def SVM_train(data_file_name):
     training_data["sentiment"] = training_data["sentiment"].map(POSNEG)
     test_data["sentiment"] = test_data["sentiment"].map(POSNEG)
 
+    #shout out to Cameron. This prevents crashes occasonally
     training_data.fillna('',inplace=True)
     test_data.fillna('',inplace=True)
 
     # Create the trainig vector
-    tfidf_training_vectorizer = TfidfVectorizer()
-    tfidf_training_vectorizer.fit(data["text"])
-    tfidf_vector = tfidf_training_vectorizer.transform(training_data["text"])
+    tfidf_vectorizer = TfidfVectorizer()
+    tfidf_vectorizer.fit(training_data["text"])
+    tfidf_vector = tfidf_vectorizer.transform(training_data["text"])
     #tfidf_vector = tfidf_training_vectorizer.transform(training_data["text"])
 
     # May set break_ties to true if we have the computational power to do so
@@ -34,18 +35,34 @@ def SVM_train(data_file_name):
 
     # I believe this trains it
     SVC.fit(tfidf_vector, training_data["sentiment"])
-    SVM_test(SVC, test_data)
+    SVM_test(SVC, test_data, tfidf_vectorizer)
+    f = open("model.svm","wb")
+    pickle.dump(SVC, f)
+    f.close()
+    f = open("vocab.tfidf","wb")
+    pickle.dump(tfidf_vectorizer, f)
+    f.close()
     
 
-def SVM_test(SVC, data):
+def SVM_test(SVC, data, tfidf_vectorizer):
     key = numpy.array(data.sentiment)
-    tfidf_training_vectorizer = TfidfVectorizer()
-    tfidf_vector = tfidf_training_vectorizer.transform(data["text"])
+    tfidf_vector = tfidf_vectorizer.transform(data["text"])
     result = SVC.predict(tfidf_vector)
-
-    
-    accuracy = numpy.mean(key == result)
-    print(str(accuracy))
     print(metrics.classification_report(key, result, target_names=['negative', 'neutral', 'positive']))
 
+class SVM_sentimint:
+    def __init__(self):
+        m = open("model.svm","rb")
+        v = open("vocab.tfidf","rb")
+        self._SVC_alg = pickle.load(m)
+        self._vectorizer = pickle.load(v)
+        m.close()
+        v.close()
+
+    def SVM_predict(self,text):
+        text.fillna('',inplace=True)
+        tfidf_vector = self._vectorizer.transform([text])
+        return self._SVC_alg.predict(tfidf_vector)[0]
+
+# Running this file will create a model
 SVM_train("cleaned_data.csv")
