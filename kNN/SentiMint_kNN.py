@@ -1,18 +1,14 @@
-
 import pickle
 
-class emotionCalculator:
+class sentiMint_kNN:
     def __init__(self):
-        model_file = open("model.knn","rb")
-        tfidf_file = open("corpus.tfidf","rb")
-
-        self._model = pickle.load(model_file)
-        self._vectorizer = pickle.load(tfidf_file)
-
-        model_file.close()
-        tfidf_file.close()
+        m = open("model.knn","rb")
+        v = open("vocab.tfidf","rb")
+        self._kNN_alg = pickle.load(m)
+        self._vectorizer = pickle.load(v)
+        m.close()
+        v.close()
 
     def predict(self, text):
         tfidf_vector = self._vectorizer.transform([text])
-
-        return self._model.predict(tfidf_vector)[0]
+        return self._kNN_alg.predict(tfidf_vector)[0]
