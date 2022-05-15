@@ -1,0 +1,22 @@
+=======================================================================================================================================================|
+| IMPORTANT NOTES:                                                                                                                                     |
+|  - requirements.txt will tell you what packages you need                                                                                             |
+|     * you can run "py -m pip install -r requirements.txt" on Windows if you have powershell or cmd open in this folder to easily install everything  |
+|  - DO NOT RUN [DO NOT RUN]modelMaker.py !!!!!!!!!!!!!!!!!!!!!!!! doing this can break everything                                                     |
+|  - The program you want to run is EmotionGuessingGame.py                                                                                             |
+|  - Most of the work was in [DO NOT RUN]modelMaker.py, you can open/view it of course, just please dont run it.                                       |
+|=======================================================================================================================================================
+
+Description:
+This project is to create a simple machine learning algorithm that guesses the emotion or sentiment of text. 
+I then turned it into a simple game where the computer tries to guess how positive any text you give it. 
+Can you trick the computer?
+
+
+Tips:
+ - simple sentance with inherintly positive or negative words will almost surely give accurate results
+    * Example: "I hate you" will give negative result
+ - an easy way to beat the computer is to have typos
+    * Example: "I AM SOOO FCGUCING AGRY RN >:(" gives neutral result 
+ - another easy way is to use positive words in a negative way and vise versa (including sarcasm)
+    * Example: "I would love to beat you up right now" gives positive result
