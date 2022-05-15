@@ -4,7 +4,7 @@ import pickle
 
 
 from sklearn import metrics
-from sklearn.neighbors import KNeighborsClassifier as kNN
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 
@@ -44,7 +44,7 @@ def kNN_train(data_file_name):
     tfidf_vector = tfidf_vectorizer.transform(training_data["text"])
 
     # k = 7 and distance mode found to yeild best results
-    k_nearest = kNN(n_neighbors = 7, weights='distance')
+    k_nearest = KNeighborsClassifier(n_neighbors = 7, weights='distance')
 
     # Training time
     k_nearest.fit(tfidf_vector, training_data["sentiment"])
