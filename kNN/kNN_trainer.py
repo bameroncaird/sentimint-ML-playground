@@ -75,4 +75,4 @@ def kNN_test(k_nearest, data, tfidf_vectorizer):
     print(metrics.classification_report(key, result, target_names=['negative', 'neutral', 'positive']))
 
 # Running this file will create a model
-kNN_train("cleaned_data.csv")
+kNN_train("../SVM/cleaned_data.csv")
