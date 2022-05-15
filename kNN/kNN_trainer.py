@@ -56,7 +56,7 @@ def kNN_train(data_file_name):
     f = open("model.knn","wb")
     pickle.dump(k_nearest, f)
     f.close()
-    f = open("corpus.tfidf","wb")
+    f = open("vocab.tfidf","wb")
     pickle.dump(tfidf_vectorizer, f)
     f.close()
     
@@ -75,4 +75,4 @@ def kNN_test(k_nearest, data, tfidf_vectorizer):
     print(metrics.classification_report(key, result, target_names=['negative', 'neutral', 'positive']))
 
 # Running this file will create a model
-kNN_train("../SVM/cleaned_data.csv")
+kNN_train("cleaned_data.csv")
